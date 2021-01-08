@@ -1,18 +1,8 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 
 using namespace std;
-
-void printBoard(vector<vector<int>> board_vec_vec) {
-  for (const auto& board_vec : board_vec_vec) {
-    for (const auto board : board_vec) {
-      cout << board << " ";
-    }
-    cout << endl;
-  }
-}
 
 int getMaxOfBoard(vector<vector<int>>& board_vec_vec) {
   int max = 0;
@@ -36,14 +26,16 @@ vector<vector<int>> moveBoard(vector<vector<int>> board_vec_vec) {
         y_temp--;
         if (y_temp == 0) break;
       }
-      swap(board_vec_vec[y][x], board_vec_vec[y_temp][x]);
-      if (y_temp == 0) continue;
-      if (board_vec_vec[y_temp - 1][x] == board_vec_vec[y_temp][x] && can_plus) {
+      if (y_temp == 0 && board_vec_vec[0][x] == 0) { // CASE 1: first index is Empty.
+        board_vec_vec[0][x] = board_vec_vec[y][x];
+        board_vec_vec[y][x] = 0;
+      } else if (board_vec_vec[y_temp - 1][x] == board_vec_vec[y][x] && can_plus) { // CASE 2: y_temp - 1 value is same with y index value.
         board_vec_vec[y_temp - 1][x] *= 2;
-        board_vec_vec[y_temp][x] = 0;
+        board_vec_vec[y][x] = 0;
         can_plus = false;
-      } else if (y != y_temp) {
+      } else if (y != y_temp) { // CASE 3: y_temp - 1 value is not same with y index value.
         board_vec_vec[y_temp][x] += board_vec_vec[y][x];
+        board_vec_vec[y][x] = 0;
         can_plus = true;
       }
     }
@@ -84,7 +76,6 @@ int main() {
       cin >> board_vec_vec[i][j];
     }
   }
-
   cout << solution(board_vec_vec, 0) << endl;
   return 0;
 }
