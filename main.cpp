@@ -18,7 +18,7 @@ int getMaxOfBoard(vector<vector<int>>& board_vec_vec) {
 
 vector<vector<int>> moveBoard(vector<vector<int>> board_vec_vec) {
   for (int x = 0; x < board_vec_vec.size(); x++) {
-    bool can_plus = true;
+    bool can_add = true;
     for (int y = 1; y < board_vec_vec.size(); y++) {
       if (board_vec_vec[y][x] == 0) continue;
       int y_temp = y;
@@ -26,17 +26,17 @@ vector<vector<int>> moveBoard(vector<vector<int>> board_vec_vec) {
         y_temp--;
         if (y_temp == 0) break;
       }
-      if (y_temp == 0 && board_vec_vec[0][x] == 0) { // CASE 1: first index is Empty.
+      if (y_temp == 0) { // CASE 1: first index is Empty.
         board_vec_vec[0][x] = board_vec_vec[y][x];
         board_vec_vec[y][x] = 0;
-      } else if (board_vec_vec[y_temp - 1][x] == board_vec_vec[y][x] && can_plus) { // CASE 2: y_temp - 1 value is same with y index value.
+      } else if (board_vec_vec[y_temp - 1][x] == board_vec_vec[y][x] && can_add) { // CASE 2: y_temp - 1 value is same with y index value.
         board_vec_vec[y_temp - 1][x] *= 2;
         board_vec_vec[y][x] = 0;
-        can_plus = false;
+        can_add = false;
       } else if (y != y_temp) { // CASE 3: y_temp - 1 value is not same with y index value.
         board_vec_vec[y_temp][x] += board_vec_vec[y][x];
         board_vec_vec[y][x] = 0;
-        can_plus = true;
+        can_add = true;
       }
     }
   }
